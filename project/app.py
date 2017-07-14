@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
 db = SQLAlchemy(app)
 db.create_all()
+db.session.commit()
 
 @app.route('/')
 def index():
