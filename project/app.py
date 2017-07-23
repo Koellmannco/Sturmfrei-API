@@ -10,13 +10,6 @@ db = SQLAlchemy(app)
 db.create_all()
 db.session.commit()
 
-@app.route('/')
-def index():
-    return "Hello, World!"
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column('id', db.Integer, primary_key=True)
@@ -25,6 +18,13 @@ class User(db.Model):
     email = db.Column('email', db.Unicode)
     password = db.Column('password', db.Unicode)
     register_date = db.Column('register_date',db.TIMESTAMP, default=datetime.now())
+
+@app.route('/')
+def index():
+    return "Hello, World! This is the Sturmfrei API"
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
     def __repr__(self):
         return '<User %r>' % (self.name)
