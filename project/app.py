@@ -5,10 +5,9 @@ from datetime import datetime
 import os
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://sturmfrei_api_DB:2Fm82iFHgmFCR8DBJsFe@sturmfrei-api-database01.cnxqjx6tjodx.us-east-1.rds.amazonaws.com/sturmfrei_api"
 db = SQLAlchemy(app)
-db.create_all()
-db.session.commit()
 
 class User(db.Model):
     __tablename__ = 'users'
