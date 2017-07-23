@@ -19,8 +19,8 @@ class User(db.Model):
     register_date = db.Column("register_date", db.TIMESTAMP, default=datetime.now())
 
 #db.drop_all()
-db.create_all()
-User1 = User(name='Austin',username='arbrog',email='arbrog@gmail.com', password='password123')
+#db.create_all()
+User1 = User(name='Austin1',username='arbrog2',email='arbrog2@gmail.com', password='password123')
 db.session.add(User1)
 db.session.commit()
 
