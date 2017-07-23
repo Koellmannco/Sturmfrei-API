@@ -12,8 +12,8 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     name = db.Column("name", db.Unicode(30))
-    username = db.Column("username", db.Unicode(25), nullable=False)
-    email = db.Column("email", db.Unicode(40), nullable=False)
+    username = db.Column("username", db.Unicode(25), nullable=False, unique=True)
+    email = db.Column("email", db.Unicode(40), nullable=False, unique=True)
     password = db.Column("password", db.Unicode(32), nullable=False)
     register_date = db.Column("register_date", db.TIMESTAMP, default=datetime.now())
 
@@ -27,8 +27,8 @@ if __name__ == '__main__':
     def __repr__(self):
         return '<User %r>' % (self.name)
 
-#db.drop_all()
-#db.create_all()
-#User1 = User(name='Austin4',username='arbrog4',email='arbrog4@gmail.com', password='password123')
-#db.session.add(User1)
-#db.session.commit()
+db.drop_all()
+db.create_all()
+User1 = User(name='Austin4',username='arbrog4',email='arbrog4@gmail.com', password='password123')
+db.session.add(User1)
+db.session.commit()
