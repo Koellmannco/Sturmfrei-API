@@ -29,6 +29,6 @@ if __name__ == '__main__':
 
 #db.drop_all()
 #db.create_all()
-User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
-db.session.add(User1)
-db.session.commit()
+#User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
+#db.session.add(User1)
+#db.session.commit()
