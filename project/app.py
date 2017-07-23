@@ -20,8 +20,8 @@ class User(db.Model):
 
 #db.drop_all()
 #db.create_all()
-User1 = User(name='Austin1',username='arbrog2',email='arbrog2@gmail.com', password='password123')
-#db.session.add(User1)
+User1 = User(name='Austin4',username='arbrog4',email='arbrog4@gmail.com', password='password123')
+db.session.add(User1)
 db.session.commit()
 
 @app.route('/')
