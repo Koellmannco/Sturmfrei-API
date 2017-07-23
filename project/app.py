@@ -5,8 +5,8 @@ from datetime import datetime
 #import os
 app = Flask(__name__)
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://sturmfrei_api_DB:2Fm82iFHgmFCR8DBJsFe@sturmfrei-api-database01.cnxqjx6tjodx.us-east-1.rds.amazonaws.com/sturmfrei_api"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://sturmfrei_api_DB:2Fm82iFHgmFCR8DBJsFe@sturmfrei-api-database01.cnxqjx6tjodx.us-east-1.rds.amazonaws.com/sturmfrei_api"
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -26,7 +26,7 @@ db.session.commit()
 
 @app.route('/')
 def index():
-    return "Hello, World! This is the Sturmfrei API"
+    return "Hello, World! This is the Sturmfrei API" + os.environ.get("DB_URL")
 
 if __name__ == '__main__':
     app.run(debug=True)
