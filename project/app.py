@@ -26,7 +26,7 @@ db.session.commit()
 
 @app.route('/')
 def index():
-    return "Hello, World! This is the Sturmfrei API" + os.environ.get("DB_URL")
+    return "Hello, World! This is the Sturmfrei API"
 
 if __name__ == '__main__':
     app.run(debug=True)
