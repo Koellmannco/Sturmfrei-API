@@ -11,12 +11,12 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.Unicode(30))
-    username = db.Column(db.Unicode(25), nullable=False)
-    email = db.Column(db.Unicode(40), nullable=False)
-    password = db.Column(db.Unicode(32), nullable=False)
-    register_date = db.Column(db.TIMESTAMP, default=datetime.now())
+    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
+    name = db.Column("name", db.Unicode(30))
+    username = db.Column("username", db.Unicode(25), nullable=False)
+    email = db.Column("email", db.Unicode(40), nullable=False)
+    password = db.Column("password", db.Unicode(32), nullable=False)
+    register_date = db.Column("register_date", db.TIMESTAMP, default=datetime.now())
 
 #db.drop_all()
 db.create_all()
