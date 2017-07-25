@@ -23,7 +23,9 @@ def index():
 
 @app.route('/getUsers', methods=['GET'])
 def getUsers():
-    userList=[db.session.query(User).order_by(User.id)]
+    userList=[]
+    for user in db.session.query(User.username).order_by(User.id):
+        userList.append(user)
     return jsonify({'userList': userList})
 
 if __name__ == '__main__':
