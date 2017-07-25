@@ -27,9 +27,9 @@ def getUsers():
     for user in db.session.query(User.username).order_by(User.id):
         userList.append(user)
     return jsonify({'userList': userList})
-    
+
 @app.route('/getUsers/<int:user_id', methods=['GET'])
-def getUsers(int user_id):
+def getUser(int user_id):
     userData=[db.session.query(User).filter(User.id=user_id)]
     return jsonify({'userData': userData})
 if __name__ == '__main__':
