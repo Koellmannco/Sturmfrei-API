@@ -23,8 +23,8 @@ def index():
 
 @app.route('/getUsers', methods=['GET'])
 def getUsers():
-    userlist=[session.query(User).order_by(User.id)]
-    return jsonify(userList)
+    userlist=[db.session.query(User).order_by(User.id)]
+    return jsonify({'userList': userList})
 
 if __name__ == '__main__':
     app.run(debug=True)
