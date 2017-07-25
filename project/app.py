@@ -21,6 +21,11 @@ class User(db.Model):
 def index():
     return "Hello, World! This is the Sturmfrei API"
 
+@app.route('/getUsers', methods=['GET'])
+def getUsers():
+    userlist=[session.query(User).order_by(User.id)]
+    return jsonify(userList)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
