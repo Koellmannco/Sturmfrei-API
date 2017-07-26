@@ -28,10 +28,11 @@ def getUsers():
         userList.append(user)
     return jsonify({'userList': userList})
 
-@app.route('/getUsers/<int:user_id', methods=['GET'])
-def getUser(int user_id):
-    userData=[db.session.query(User).filter(User.id=user_id)]
-    return jsonify({'userData': userData})
+@app.route('/getUsers/<int:user_id>', methods=['GET'])
+def getUser(user_id):
+    user=db.session.query(User).first()
+    return jsonify({'user': user})
+
 if __name__ == '__main__':
     app.run(debug=True)
 
