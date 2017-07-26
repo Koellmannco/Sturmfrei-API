@@ -30,7 +30,7 @@ def getUsers():
 
 @app.route('/getUsers/<int:user_id', methods=['GET'])
 def getUser(user_id):
-    user=db.session.query(User).filter(User.id=user_id).first
+    user=db.session.query(User).filter_by(User.id=user_id).first()
     return jsonify({'user': user})
 
 if __name__ == '__main__':
