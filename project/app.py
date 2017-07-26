@@ -28,7 +28,7 @@ def getUsers():
         userList.append(user)
     return jsonify({'userList': userList})
 
-@app.route('/getUsers/<int:user_id', methods=['GET'])
+@app.route('/getUsers/<int:user_id>', methods=['GET'])
 def getUser(user_id):
     user=db.session.query(User).first()
     return jsonify({'user': user})
