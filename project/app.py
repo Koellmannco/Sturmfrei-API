@@ -1,26 +1,14 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from project.database import db
+from project.user import User
+import warnings
 
 import os
 
 app = Flask(__name__)
-
+# app.secret_key = 'Test123'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.Unicode(30))
-    username = db.Column(db.Unicode(25), nullable=False, unique=True)
-    email = db.Column(db.Unicode(40), nullable=False, unique=True)
-    password = db.Column(db.Unicode(32), nullable=False)
-    register_date = db.Column(db.TIMESTAMP, default=datetime.now())
-
-    def __repr__(self):
-        return '{0} {1}: {2}'.format(self.name, self.username, self.email)
+db.init_app(app)
 
 
 @app.route('/')
@@ -45,9 +33,15 @@ def getUser(user_id):
 if __name__ == '__main__':
     app.run(debug=True)
 
+try:
+    db.drop_all()
+except:
+    warnings.warn("error in dropping DB")
+try:
+    db.create_all()
+except:
+    warnings.warn("error adding DB")
 
-# db.drop_all()
-# db.create_all()
-# User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
-# db.session.add(User1)
-# db.session.commit()
+User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
+db.session.add(User1)
+db.session.commit()
