@@ -33,9 +33,9 @@ def getUser(user_id):
 if __name__ == '__main__':
     app.run(debug=True)
 
-
-db.drop_all()
-db.create_all()
+with app.app_context():
+    db.drop_all()
+    db.create_all()
 User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
 db.session.add(User1)
 db.session.commit()
