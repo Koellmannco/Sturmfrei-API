@@ -33,15 +33,9 @@ def getUser(user_id):
 if __name__ == '__main__':
     app.run(debug=True)
 
-try:
-    db.drop_all()
-except:
-    warnings.warn("error in dropping DB")
-try:
-    db.create_all()
-except:
-    warnings.warn("error adding DB")
 
+db.drop_all()
+db.create_all()
 User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
 db.session.add(User1)
 db.session.commit()
