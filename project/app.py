@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from project.database import db
-from project.user import User
+from project.user import User, UserSchema
 from flask_restful import Resource, Api
 from mixer.backend.flask import mixer
 
@@ -10,6 +10,7 @@ app = Flask(__name__)
 api = Api(app)
 # app.secret_key = 'Test123'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
@@ -24,14 +25,16 @@ class listUsers(Resource):
             userList.append(user)
         return jsonify({'userList': userList})
 
-api.add_resource(listUsers, '/getUsers')
+api.add_resource(listUsers, '/Users')
 
 class Users(Resource):
     def get(self, user_name):
-        user = db.session.query(User.username).filter_by(username=user_name).first()
-        return jsonify({'user': user})
+        user = db.session.query(User).filter_by(username=user_name).first()
+        schema = UserSchema()
+        userJSON = schema.dump(user)
+        return jsonify({'user': userJSON})
 
-api.add_resource(Users, '/getUsers/<string:user_name>')
+api.add_resource(Users, '/Users/<string:user_name>')
 
 if __name__ == '__main__':
     app.run(debug=True)
