@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from project.database import db
 from project.user import User
 from flask_restful import Resource, Api
+from mixer.backend.flask import mixer
 
 import os
 
@@ -41,3 +42,7 @@ if __name__ == '__main__':
   #  User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
    # db.session.add(User1)
    # db.session.commit()
+
+mixer.init_app(app)
+
+users = mixer.cycle(10).blend(User)
