@@ -1,14 +1,15 @@
 from project.database import db
-from datetime import datetime
-
+from sqlalchemy.sql import func
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.String(30))
-    username = db.Column(db.String(25), nullable=False, unique=True)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
+    username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(40), nullable=False, unique=True)
     password = db.Column(db.String(32), nullable=False)
-    register_date = db.Column(db.TIMESTAMP, default=datetime.now())
+    time_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    time_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     # def __init__(self, name, username, email, password):
     #     self.name = name
