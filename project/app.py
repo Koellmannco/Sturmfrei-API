@@ -43,6 +43,6 @@ if __name__ == '__main__':
    # db.session.add(User1)
    # db.session.commit()
 
-#mixer.init_app(app)
+mixer.init_app(app)
 
-#users = mixer.cycle(10).blend(User)
+users = mixer.cycle(10).blend(User)
