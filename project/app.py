@@ -27,7 +27,7 @@ api.add_resource(getUsers, '/getUsers')
 
 class getUser(Resource):
     def get(self, user_id):
-        user = db.session.query(User).first()
+        user = db.session.query(User.username).first()
         return jsonify({'user': user})
 
 api.add_resource(getUser, '/getUsers/<int:user_id>')
