@@ -39,7 +39,7 @@ if __name__ == '__main__':
 with app.app_context():
     db.drop_all()
     db.create_all()
-    User1 = User(name='Austin1',username='arbrog1',email='arbrog1@gmail.com', password='password123')
+    User1 = User(firstname='Austin', lastname='Brogan', username='arbrog',email='arbrog14@gmail.com', password='password123')
     db.session.add(User1)
     db.session.commit()
     mixer.init_app(app)
