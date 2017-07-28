@@ -23,7 +23,9 @@ class listUsers(Resource):
         userList = []
         for user in db.session.query(User.username).order_by(User.id):
             userList.append(user)
-        return jsonify({'userList': userList})
+        schema = UserSchema(many=True)
+        result = schema.dump(userList)
+        return jsonify({'userList': result.data})
 
 api.add_resource(listUsers, '/Users')
 
@@ -32,7 +34,14 @@ class Users(Resource):
         user = db.session.query(User).filter_by(username=user_name).first()
         schema = UserSchema()
         userJSON = schema.dump(user)
-        return jsonify({'user': userJSON})
+        return jsonify({'user': userJSON.data})
+
+    def put(self, userObj):
+        schema = UserSchema()
+        user = schema.load(userObj)
+        db.session.add(user.data)
+        db.session.commit()
+        return jsonify({'status': 'success'})
 
 api.add_resource(Users, '/Users/<string:user_name>')
 

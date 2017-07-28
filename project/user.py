@@ -1,6 +1,7 @@
 from project.database import db
 from sqlalchemy.sql import func
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -32,3 +33,7 @@ class UserSchema(Schema):
     password = fields.Str()
     time_created = fields.DateTime()
     time_updated = fields.DateTime()
+
+    @post_load
+    def make_user(selfself, data):
+        return User(**data)
