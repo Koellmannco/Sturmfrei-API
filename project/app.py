@@ -17,21 +17,21 @@ db.init_app(app)
 def index():
     return "Hello, World! This is the Sturmfrei API"
 
-class getUsers(Resource):
+class listUsers(Resource):
     def get(self):
         userList = []
         for user in db.session.query(User.username).order_by(User.id):
             userList.append(user)
         return jsonify({'userList': userList})
 
-api.add_resource(getUsers, '/getUsers')
+api.add_resource(listUsers, '/getUsers')
 
-class getUser(Resource):
-    def get(self, user_id):
-        user = db.session.query(User.username).first()
+class Users(Resource):
+    def get(self, user_name):
+        user = db.session.query(User.username).filter_by(username=user_name).first()
         return jsonify({'user': user})
 
-api.add_resource(getUser, '/getUsers/<int:user_id>')
+api.add_resource(Users, '/getUsers/<string:user_name>')
 
 if __name__ == '__main__':
     app.run(debug=True)
