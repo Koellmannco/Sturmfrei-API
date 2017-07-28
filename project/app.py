@@ -21,7 +21,7 @@ def index():
 class listUsers(Resource):
     def get(self):
         userList = []
-        for user in db.session.query(User.username).order_by(User.id):
+        for user in db.session.query(User).order_by(User.id):
             userList.append(user)
         schema = UserSchema(many=True)
         result = schema.dump(userList)
