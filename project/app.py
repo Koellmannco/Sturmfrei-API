@@ -25,16 +25,16 @@ class listUsers(Resource):
             userList.append(user)
         schema = UserSchema(many=True)
         result = schema.dump(userList)
-        return jsonify({'userList': result.data})
+        return jsonify({'result': result})
 
-api.add_resource(listUsers, '/Users')
+api.add_resource(listUsers, '/Users', '/Users/')
 
 class Users(Resource):
     def get(self, user_name):
         user = db.session.query(User).filter_by(username=user_name).first()
         schema = UserSchema()
         userJSON = schema.dump(user)
-        return jsonify({'user': userJSON.data})
+        return jsonify({'result': userJSON})
 
     def put(self, userObj):
         schema = UserSchema()
