@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, json
+from flask import Flask, jsonify
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
-
 from mixer.backend.flask import mixer
 
 import os
@@ -35,7 +34,7 @@ class Users(Resource):
         user = db.session.query(User).filter_by(username=user_name).first()
         schema = UserSchema()
         userJSON = schema.dump(user)
-        return json.loads(userJSON)
+        return jsonify({'result': userJSON})
 
     def put(self, userObj):
         schema = UserSchema()
