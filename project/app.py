@@ -3,6 +3,7 @@ from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
 from mixer.backend.flask import mixer
+import logging
 
 import os
 
@@ -38,6 +39,7 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
+        logging.info(request.get_data())
         user = schema.load(request.get_data())
         print(user)
         db.session.add(user)
