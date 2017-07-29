@@ -34,7 +34,7 @@ class Users(Resource):
         user = db.session.query(User).filter_by(username=user_name).first()
         schema = UserSchema()
         userJSON = schema.dump(user)
-        return jsonify({'result': userJSON})
+        return  userJSON
 
     def put(self, userObj):
         schema = UserSchema()
