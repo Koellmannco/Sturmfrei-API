@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
@@ -36,10 +36,11 @@ class Users(Resource):
         userJSON = schema.dump(user)
         return jsonify({'result': userJSON})
 
-    def put(self, userObj):
+    def put(self):
         schema = UserSchema()
-        user = schema.load(userObj)
-        db.session.add(user.data)
+        user = schema.load(request.get_data())
+        print(user)
+        db.session.add(user)
         db.session.commit()
         return jsonify({'status': 'success'})
 
