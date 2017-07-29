@@ -31,7 +31,7 @@ api.add_resource(listUsers, '/Users')
 
 class Users(Resource):
     def get(self):
-        user = db.session.query(User).filter_by(username=user_name).first()
+        user = db.session.query(User).filter_by('arbrog').first()
         schema = UserSchema()
         userJSON = schema.dump(user)
         return jsonify({'result': userJSON})
