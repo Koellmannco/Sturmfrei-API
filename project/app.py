@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 api = Api(app)
-# app.secret_key = 'Test123'
+app.secret_key = os.environ.get("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
@@ -27,10 +27,10 @@ class listUsers(Resource):
         result = schema.dump(userList)
         return jsonify({'result': result})
 
-api.add_resource(listUsers, '/Users', '/Users/')
+api.add_resource(listUsers, '/Users')
 
 class Users(Resource):
-    def get(self, user_name):
+    def get(self):
         user = db.session.query(User).filter_by(username=user_name).first()
         schema = UserSchema()
         userJSON = schema.dump(user)
@@ -44,7 +44,7 @@ class Users(Resource):
         db.session.commit()
         return jsonify({'status': 'success'})
 
-api.add_resource(Users, '/Users/<string:user_name>')
+api.add_resource(Users, '/Users/')
 
 if __name__ == '__main__':
     app.run(debug=True)
