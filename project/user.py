@@ -26,11 +26,11 @@ class User(db.Model):
 
 class UserSchema(Schema):
     id = fields.Str()
-    firstname = fields.Str()
-    lastname = fields.Str()
-    username = fields.Str()
-    email = fields.Email()
-    password = fields.Str()
+    firstname = fields.Str(required=True)
+    lastname = fields.Str(required=True)
+    username = fields.Str(required=True)
+    email = fields.Email(required=True)
+    password = fields.Str(required=True)
     time_created = fields.DateTime()
     time_updated = fields.DateTime()
 
