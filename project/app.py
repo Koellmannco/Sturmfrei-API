@@ -39,7 +39,7 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
-        logging.info("test")
+        logging.debug("test")
         logging.info(request.get_data())
         user = schema.load(request.get_data())
         print(user)
