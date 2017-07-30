@@ -39,10 +39,7 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
-        logging.debug("test")
-        logging.info(request.get_data())
-        user = schema.load(request.get_data())
-        print(user)
+        user = schema.load(request.data)
         #db.session.add(user)
         #db.session.commit()
         return jsonify({'response': user})

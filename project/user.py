@@ -22,7 +22,7 @@ class User(db.Model):
         self.password = password
 
     def __repr__(self):
-        return '{0} {1}: {2}'.format(self.name, self.username, self.email)
+        return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
 
 class UserSchema(Schema):
     id = fields.Int()
