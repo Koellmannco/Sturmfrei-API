@@ -45,7 +45,7 @@ class Users(Resource):
         print(user)
         #db.session.add(user)
         #db.session.commit()
-        return jsonify({'status': 'success'})
+        return jsonify({'response': 'user'})
 
 api.add_resource(Users, '/Users/')
 
