@@ -25,14 +25,14 @@ class User(db.Model):
         return '{0} {1}: {2}'.format(self.name, self.username, self.email)
 
 class UserSchema(Schema):
-    #id = fields.Str()
+    id = fields.Str()
     firstname = fields.Str(required=True)
     lastname = fields.Str(required=True)
     username = fields.Str(required=True)
     email = fields.Email(required=True)
     password = fields.Str(required=True)
-    #time_created = fields.DateTime()
-    #time_updated = fields.DateTime()
+    time_created = fields.DateTime()
+    time_updated = fields.DateTime()
 
     @post_load
     def make_user(selfself, data):
