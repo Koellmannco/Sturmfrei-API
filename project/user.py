@@ -35,5 +35,5 @@ class UserSchema(Schema):
     time_updated = fields.DateTime()
 
     @post_load
-    def make_user(selfself, data):
+    def make_user(self, data):
         return User(**data)
