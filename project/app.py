@@ -42,7 +42,8 @@ class Users(Resource):
         user = schema.load(request.data)
         #db.session.add(user)
         #db.session.commit()
-        return jsonify({'result': request.data})
+        return print(request.data)
+        #return jsonify({'result': user})
 
 api.add_resource(Users, '/Users/')
 
