@@ -38,11 +38,13 @@ class Users(Resource):
         return jsonify({'result': userJSON})
 
     def put(self):
-        schema = UserSchema()
+        #schema = UserSchema()
         #user = schema.load(request.data)
         #db.session.add(user)
         #db.session.commit()
-        return print(request.args)
+        args = request.args
+        print(args)
+        return args
         #return jsonify({'result': user})
 
 api.add_resource(Users, '/Users/')
