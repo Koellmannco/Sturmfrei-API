@@ -1,6 +1,6 @@
 from project.database import db
 from sqlalchemy.sql import func
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields, post_load, ValidationError
 
 
 class User(db.Model):
@@ -25,12 +25,27 @@ class User(db.Model):
         return '{0} {1}: {2}'.format(self.name, self.username, self.email)
 
 class UserSchema(Schema):
-    id = fields.Str()
-    firstname = fields.Str(required=True)
-    lastname = fields.Str(required=True)
-    username = fields.Str(required=True)
-    email = fields.Email(required=True)
-    password = fields.Str(required=True)
+    id = fields.Int()
+    firstname = fields.Str(
+        required=True,
+        error_messages={'required': 'A first name is a required'}
+    )
+    lastname = fields.Str(
+        required=True,
+        error_messages={'required': 'A last name is a required'}
+    )
+    username = fields.Str(
+        required=True,
+        error_messages={'required': 'A username is a required'}
+    )
+    email = fields.Email(
+        required=True,
+        error_messages={'required': 'A email address is a required'}
+    )
+    password = fields.Str(
+        required=True,
+        error_messages={'required': 'A password is a required'}
+    )
     time_created = fields.DateTime()
     time_updated = fields.DateTime()
 
