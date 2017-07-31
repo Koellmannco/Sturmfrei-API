@@ -50,9 +50,9 @@ class UserSchema(Schema):
     time_created = fields.DateTime()
     time_updated = fields.DateTime()
 
-    class Meta:
-        fields = ("id", "firstname", "lastname", "username", "email", "password", "time_created", "time_updated")
-        ordered = True
+    # class Meta:
+    #     fields = ("id", "firstname", "lastname", "username", "email", "password", "time_created", "time_updated")
+    #     ordered = True
 
     @post_load
     def make_user(self, data):
