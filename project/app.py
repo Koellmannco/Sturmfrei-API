@@ -42,10 +42,10 @@ class Users(Resource):
     def put(self):
         schema = UserSchema()
         user,error = schema.loads(request.data)
-        #handle_validation_errors(error)
+        handle_validation_errors(error)
         db.session.add(user)
         db.session.commit()
-
+        print(error)
 
 api.add_resource(Users, '/Users/')
 
