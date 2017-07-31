@@ -4,7 +4,7 @@ from project.user import User, UserSchema
 from flask_restful import Resource, Api
 from sqlalchemy.exc import DBAPIError
 from functools import wraps
-from mixer.backend.flask import mixer
+#from mixer.backend.flask import mixer
 
 import os
 
@@ -20,6 +20,7 @@ db.init_app(app)
 def index():
     return "Hello, World! This is the Sturmfrei API"
 
+
 class listUsers(Resource):
     def get(self):
         userList = []
@@ -29,10 +30,13 @@ class listUsers(Resource):
         result = schema.dump(userList)
         return jsonify({'result': result})
 
+
 api.add_resource(listUsers, '/Users')
+
 
 class Users(Resource):
     method_decorators = [database_error_handler]
+
     def get(self):
         user = db.session.query(User).filter_by(username="arbrog").first()
         schema = UserSchema()
@@ -41,11 +45,12 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
-        user,error = schema.loads(request.data)
+        user, error = schema.loads(request.data)
         handle_validation_errors(error)
         db.session.add(user)
         db.session.commit()
         print(error)
+
 
 api.add_resource(Users, '/Users/')
 
@@ -63,6 +68,7 @@ def handle_validation_errors(errors):
             errorString += '\n'
         abort(409, errorString)
 
+
 def database_error_handler(f):
     """
     Use like so:
@@ -75,7 +81,7 @@ def database_error_handler(f):
 
     @wraps(f)
     def decorator(*args, **kwargs):
-        if True: #not app.config.get('TESTING', False):
+        if True:  # not app.config.get('TESTING', False):
             try:
                 ret = f(*args, **kwargs)
             except DBAPIError as e:
