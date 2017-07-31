@@ -32,7 +32,7 @@ class listUsers(Resource):
 api.add_resource(listUsers, '/Users')
 
 class Users(Resource):
-    #method_decorators = [database_error_handler]
+    method_decorators = [database_error_handler]
     def get(self):
         user = db.session.query(User).filter_by(username="arbrog").first()
         schema = UserSchema()
