@@ -16,13 +16,14 @@ class User(db.Model):
 
     def __init__(self, firstname, lastname, username, email, password):
         self.firstname = firstname
-        self.lastname= lastname
+        self.lastname = lastname
         self.username = username
         self.email = email
         self.password = password
 
     def __repr__(self):
         return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
+
 
 class UserSchema(Schema):
     id = fields.Int()
@@ -48,6 +49,10 @@ class UserSchema(Schema):
     )
     time_created = fields.DateTime()
     time_updated = fields.DateTime()
+
+    class Meta:
+        fields = ("id", "firstname", "lastname", "username", "email", "password", "time_created", "time_updated")
+        ordered = True
 
     @post_load
     def make_user(self, data):
