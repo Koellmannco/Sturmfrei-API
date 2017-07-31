@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
+from sqlalchemy.exc import DBAPIError
+from functools import wraps
 from mixer.backend.flask import mixer
-import logging
 
 import os
 
@@ -31,6 +32,7 @@ class listUsers(Resource):
 api.add_resource(listUsers, '/Users')
 
 class Users(Resource):
+    method_decorators = [database_error_handler]
     def get(self):
         user = db.session.query(User).filter_by(username="arbrog").first()
         schema = UserSchema()
@@ -40,15 +42,52 @@ class Users(Resource):
     def put(self):
         schema = UserSchema()
         user,error = schema.loads(request.data)
-        #db.session.add(user)
-        #db.session.commit()
-        print(user)
-        return error
+        handle_validation_errors(error)
+        db.session.add(user)
+        db.session.commit()
+
 
 api.add_resource(Users, '/Users/')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+def handle_validation_errors(errors):
+    if len(errors):
+        errorString = ''
+        for k in errors:
+            errorString += k + ' '
+            for error in errors[k]:
+                errorString += error + ', '
+            errorString += '\n'
+        abort(409, errorString)
+
+def database_error_handler(f):
+    """
+    Use like so:
+
+    class Users(Resource):
+      method_decorators = [database_error_handler]
+      def get(...):
+        ...
+    """
+
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        if True: #not app.config.get('TESTING', False):
+            try:
+                ret = f(*args, **kwargs)
+            except DBAPIError as e:
+                diag = e.__cause__.diag
+                msg = diag.message_detail or diag.message_primary or diag.message_hint or str(e.__class__.__name__)
+                abort(409, msg)
+
+            return ret
+        else:
+            return f(*args, **kwargs)
+
+    return decorator
 
 # with app.app_context():
 #     db.drop_all()
