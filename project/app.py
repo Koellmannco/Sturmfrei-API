@@ -39,11 +39,11 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
-        user = schema.loads(request.data)
+        user,error = schema.loads(request.data)
         #db.session.add(user)
         #db.session.commit()
         print(user)
-        return {'result': user}
+        return error
 
 api.add_resource(Users, '/Users/')
 
