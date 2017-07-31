@@ -39,7 +39,7 @@ class Users(Resource):
 
     def put(self):
         schema = UserSchema()
-        user = schema.load(request.data)
+        user = schema.loads(request.data)
         #db.session.add(user)
         #db.session.commit()
         print(user)
