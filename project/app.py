@@ -53,8 +53,8 @@ class Users(Resource):
 
     def post(self):
         data = request.data
-        errors = UserSchema().validate(data)
-        handle_validation_errors(errors)
+        #errors = UserSchema().validate(data)
+        #handle_validation_errors(errors)
         for key in data:
             print(key)
 
