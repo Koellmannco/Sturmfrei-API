@@ -62,6 +62,7 @@ class Users(Resource):
                     user.firstname = value
                 if key == 'lastname':
                     user.lastname == value
+        db.session.commit()
 
 
 api.add_resource(Users, '/Users/')
