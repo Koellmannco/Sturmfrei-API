@@ -61,7 +61,9 @@ class Users(Resource):
                 if key == 'firstname':
                     user.firstname = value
                 if key == 'lastname':
-                    user.lastname == value
+                    user.lastname = value
+                if key == 'username':
+                    user.username = value
         db.session.commit()
 
 
