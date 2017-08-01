@@ -56,8 +56,12 @@ class Users(Resource):
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
         if 'username' in data and 1 < len(data):
-            for item in data:
-                print(item)
+            user = User.query.filter_by(username=data['username']).first()
+            for key, value in data:
+                if key == 'firstname':
+                    user.firstname = value
+                if key == 'lastname':
+                    user.lastname == value
 
 
 api.add_resource(Users, '/Users/')
