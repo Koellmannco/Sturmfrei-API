@@ -55,7 +55,7 @@ class Users(Resource):
         data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
-        if data.has_key('username') and 1 < len(data):
+        if 'username' in data and 1 < len(data):
             for item in data:
                 print(item)
 
