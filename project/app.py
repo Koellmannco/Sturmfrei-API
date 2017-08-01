@@ -55,9 +55,9 @@ class Users(Resource):
         data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
-        print(type(data))
-        for item in data:
-            print(type(item))
+        if data.has_key('username') and 1 < len(data):
+            for item in data:
+                print(item)
 
 
 api.add_resource(Users, '/Users/')
