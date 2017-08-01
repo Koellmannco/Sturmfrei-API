@@ -34,6 +34,17 @@ class listUsers(Resource):
 api.add_resource(listUsers, '/Users')
 
 
+def recursive_iter(obj):
+    if isinstance(obj, dict):
+        for item in obj.values():
+            yield from recursive_iter(item)
+    elif any(isinstance(obj, t) for t in (list, tuple)):
+        for item in obj:
+            yield from recursive_iter(item)
+    else:
+        yield obj
+
+
 class Users(Resource):
     method_decorators = [database_error_handler]
 
@@ -56,8 +67,8 @@ class Users(Resource):
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
         print(data)
-        for key, value in data:
-            print(key, value)
+        for item in recursive_iter(data):
+            print(item)
 
 
 api.add_resource(Users, '/Users/')
