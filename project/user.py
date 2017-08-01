@@ -28,27 +28,23 @@ class User(db.Model):
 class UserSchema(Schema):
     id = fields.Int()
     firstname = fields.Str(
-        required=True,
-        error_messages={'required': 'A first name is a required'}
+        required=True
     )
     lastname = fields.Str(
-        required=True,
-        error_messages={'required': 'A last name is a required'}
+        required=True
     )
     username = fields.Str(
-        required=True,
-        error_messages={'required': 'A username is a required'}
+        required=True
     )
     email = fields.Email(
-        required=True,
-        error_messages={'required': 'A email address is a required'}
+        required=True
     )
     password = fields.Str(
-        required=True,
-        error_messages={'required': 'A password is a required'}
+        load_only=True,
+        required=True
     )
-    time_created = fields.DateTime()
-    time_updated = fields.DateTime()
+    time_created = fields.DateTime(dump_only=True)
+    time_updated = fields.DateTime(dump_only=True)
 
     # class Meta:
     #     fields = ("id", "firstname", "lastname", "username", "email", "password", "time_created", "time_updated")

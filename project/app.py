@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
 from project.database_error_handler import database_error_handler
+from project.validation_errors import handle_validation_errors
 #from mixer.backend.flask import mixer
 
 import os
@@ -50,22 +51,18 @@ class Users(Resource):
         db.session.commit()
         print(error)
 
+    def post(self):
+        data = request.data
+        errors = UserSchema().validate(data)
+        handle_validation_errors(errors)
+        for key in data:
+            print(key)
+
 
 api.add_resource(Users, '/Users/')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-def handle_validation_errors(errors):
-    if len(errors):
-        errorString = ''
-        for k in errors:
-            errorString += k + ' '
-            for error in errors[k]:
-                errorString += error + ', '
-            errorString += '\n'
-        abort(409, errorString)
 
 
 # with app.app_context():
