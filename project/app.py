@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
@@ -52,11 +52,13 @@ class Users(Resource):
         print(error)
 
     def post(self):
-        data = request.data
+        data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
-        for key in data:
-            print(key)
+        print(data)
+        print("key, value:")
+        for key, value in request.data.items():
+            print(key, value)
 
 
 api.add_resource(Users, '/Users/')
