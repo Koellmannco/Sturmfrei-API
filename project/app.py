@@ -56,8 +56,7 @@ class Users(Resource):
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
         print(data)
-        print("key, value:")
-        for key, value in request.data.items():
+        for key, value in data:
             print(key, value)
 
 
