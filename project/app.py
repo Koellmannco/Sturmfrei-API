@@ -53,7 +53,7 @@ class Users(Resource):
 
     def post(self):
         data = json.loads(request.data)
-        errors = UserSchema().validate(data, partial=True)
+        errors = UserSchema().validate(data, partial=True )
         handle_validation_errors(errors)
         if 'id' in data and 1 < len(data):
             user = User.query.filter_by(id=data['id']).first()
