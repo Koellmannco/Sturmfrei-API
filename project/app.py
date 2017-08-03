@@ -51,23 +51,23 @@ class Users(Resource):
         db.session.commit()
         print(error)
 
-    def post(self):
+    def post(self, user_id):
         data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
         if 'username' in data and 1 < len(data):
-            user = User.query.filter_by(username=data['username']).first()
+            user = User.query.filter_by(id=user_id).first()
             for key, value in data.items():
                 if key == 'firstname':
                     user.firstname = value
                 if key == 'lastname':
                     user.lastname = value
-                if key == 'username':
-                    user.username = value
+                if key == 'email':
+                    user.email = value
         db.session.commit()
 
 
-api.add_resource(Users, '/Users/')
+api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
 
 if __name__ == '__main__':
     app.run(debug=True)
