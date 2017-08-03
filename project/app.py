@@ -38,7 +38,7 @@ class Users(Resource):
     method_decorators = [database_error_handler]
 
     def get(self):
-        user = db.session.query(User).filter_by(username="arbrog").first()
+        user = User.query(User).filter_by(username="arbrog").first()
         schema = UserSchema()
         userJSON = schema.dump(user)
         return jsonify({'result': userJSON})
@@ -49,14 +49,14 @@ class Users(Resource):
         handle_validation_errors(error)
         db.session.add(user)
         db.session.commit()
-        print(error)
+        #print(error)
 
     def post(self, user_id):
         data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
-        if 'username' in data and 1 < len(data):
-            user = User.query.filter_by(id=user_id).first()
+        if 'id' in data and 1 < len(data):
+            user = User.query.filter_by(id=data['id']).first()
             for key, value in data.items():
                 if key == 'firstname':
                     user.firstname = value
@@ -64,10 +64,12 @@ class Users(Resource):
                     user.lastname = value
                 if key == 'email':
                     user.email = value
+                if key == 'username':
+                    user.username = value
         db.session.commit()
 
 
-api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
+api.add_resource(Users, '/Users/')
 
 if __name__ == '__main__':
     app.run(debug=True)
