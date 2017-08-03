@@ -3,14 +3,6 @@ from functools import wraps
 from flask import abort
 
 def database_error_handler(f):
-    """
-    Use like so:
-
-    class Users(Resource):
-      method_decorators = [database_error_handler]
-      def get(...):
-        ...
-    """
 
     @wraps(f)
     def decorator(*args, **kwargs):

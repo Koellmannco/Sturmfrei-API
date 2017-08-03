@@ -57,20 +57,23 @@ class Users(Resource):
         handle_validation_errors(errors)
         if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
-            print(user)
-            for key, value in data.items():
-                if key == 'firstname':
-                    user.firstname = value
-                if key == 'lastname':
-                    user.lastname = value
-                if key == 'email':
-                    user.email = value
-                if key == 'username':
-                    user.username = value
+            if user is not None:
+                for key, value in data.items():
+                    if key == 'firstname':
+                        user.firstname = value
+                    if key == 'lastname':
+                        user.lastname = value
+                    if key == 'email':
+                        user.email = value
+                    if key == 'username':
+                        user.username = value
+                db.session.commit()
+            else:
+                errors = {"id" : "user does not exist"}
         else:
             errors = {"id" : "missing user id"}
-            handle_validation_errors(errors)
-        db.session.commit()
+        handle_validation_errors(errors)
+
 
 
 api.add_resource(Users, '/Users/')
