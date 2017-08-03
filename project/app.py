@@ -55,7 +55,7 @@ class Users(Resource):
         data = json.loads(request.data)
         errors = UserSchema().validate(data, partial=True )
         handle_validation_errors(errors)
-        if 'id' in data and 1 < len(data):
+        if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
             for key, value in data.items():
                 if key == 'firstname':
@@ -66,6 +66,9 @@ class Users(Resource):
                     user.email = value
                 if key == 'username':
                     user.username = value
+        else:
+            errors = {'id' : 'missing user id'}
+            handle_validation_errors(errors)
         db.session.commit()
 
 
