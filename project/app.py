@@ -18,7 +18,7 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return "Hello, World! This is the Sturmfrei API"
+    return "Hello, World! This is the Sturmfrei API landing page"
 
 
 class listUsers(Resource):
@@ -54,6 +54,7 @@ class Users(Resource):
     def post(self):
         data = json.loads(request.data)
         errors = UserSchema().validate(data, partial=True )
+        print(type(errors))
         handle_validation_errors(errors)
         if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
@@ -72,8 +73,8 @@ class Users(Resource):
                 errors = {"id" : "user does not exist"}
         else:
             errors = {"id" : "missing user id"}
+        print(type(errors))
         handle_validation_errors(errors)
-
 
 
 api.add_resource(Users, '/Users/')
