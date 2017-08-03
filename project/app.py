@@ -57,6 +57,7 @@ class Users(Resource):
         handle_validation_errors(errors)
         if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
+            print(user)
             for key, value in data.items():
                 if key == 'firstname':
                     user.firstname = value
