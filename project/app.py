@@ -67,7 +67,7 @@ class Users(Resource):
                 if key == 'username':
                     user.username = value
         else:
-            errors = {'id' : 'missing user id'}
+            errors = {"id" : "missing user id"}
             handle_validation_errors(errors)
         db.session.commit()
 
