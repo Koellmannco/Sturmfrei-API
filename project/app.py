@@ -51,7 +51,7 @@ class Users(Resource):
         db.session.commit()
         #print(error)
 
-    def post(self, user_id):
+    def post(self):
         data = json.loads(request.data)
         #errors = UserSchema().validate(data)
         #handle_validation_errors(errors)
