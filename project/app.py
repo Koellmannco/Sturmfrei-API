@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, abort
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
@@ -54,7 +54,6 @@ class Users(Resource):
     def post(self):
         data = json.loads(request.data)
         errors = UserSchema().validate(data, partial=True )
-        print(type(errors))
         handle_validation_errors(errors)
         if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
@@ -70,11 +69,9 @@ class Users(Resource):
                         user.username = value
                 db.session.commit()
             else:
-                errors = {"id" : "user does not exist"}
+                abort(404, "user does not exist")
         else:
-            errors = {"id" : "missing user id"}
-        print(type(errors))
-        handle_validation_errors(errors)
+            abort(404, "missing user id")
 
 
 api.add_resource(Users, '/Users/')
