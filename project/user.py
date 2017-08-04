@@ -28,10 +28,10 @@ class User(db.Model):
         self.password = password
 
     @staticmethod
-    def get(id=None, username=None):
-        if id:
+    def get(user_id=None, username=None):
+        if user_id:
             print("get user by id")
-            return User.query.filter_by(id=id).first()
+            return User.query.filter_by(id=user_id).first()
         elif username:
             print("get user by username")
             return User.query.filter_by(username=username).first()
@@ -68,9 +68,10 @@ class User(db.Model):
 @auth.verify_password
 def verify_password(username_or_token, password):
     # first try to authenticate by token
-    print(username_or_token)
+    print("verify based on token")
     user = User.verify_auth_token(username_or_token)
     if not user:
+        print("verify based on credentials")
         user = User.get(username=username_or_token)  # based on credentials
         if not user or not user.verify_password(password):
             return False
