@@ -39,7 +39,7 @@ class Users(Resource):
 
     @auth.login_required
     def get(self, user_id):
-        user = User.get(id=user_id)
+        user = User.get(user_id=user_id)
         if user is not None:
             schema = UserSchema()
             userJSON = schema.dump(user)
