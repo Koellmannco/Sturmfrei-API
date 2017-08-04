@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json, abort
+from flask import Flask, jsonify, request, json, abort, g
 from project.database import db
 from project.user import User, UserSchema
 from flask_restful import Resource, Api
@@ -38,10 +38,17 @@ class Users(Resource):
     method_decorators = [database_error_handler]
 
     def get(self):
-        user = User.query(User).filter_by(username="arbrog").first()
-        schema = UserSchema()
-        userJSON = schema.dump(user)
-        return jsonify({'result': userJSON})
+        data = json.loads(request.data)
+        if 'id' in data:
+            user = User.query.filter_by(id=data['id']).first()
+            if user is not None:
+                schema = UserSchema()
+                userJSON = schema.dump(user)
+                return jsonify({'result': userJSON})
+            else:
+                abort(404, "user does not exist")
+        else:
+            abort(409, "missing user id")
 
     def put(self):
         schema = UserSchema()
@@ -49,7 +56,6 @@ class Users(Resource):
         handle_validation_errors(error)
         db.session.add(user)
         db.session.commit()
-        #print(error)
 
     def post(self):
         data = json.loads(request.data)
@@ -71,10 +77,25 @@ class Users(Resource):
             else:
                 abort(404, "user does not exist")
         else:
-            abort(404, "missing user id")
+            abort(409, "missing user id")
 
 
 api.add_resource(Users, '/Users/')
+
+
+class Auth(Resource):
+    def get(self):
+        duration = 600
+        token = g.user.generate_auth_token(duration)
+        return jsonify({
+            'token': token.decode('ascii'),
+            'duration': duration,
+            'message': 'After Duration: {duration} secs, request for a new token.'.format(duration=duration)
+        })
+
+
+api.add_resource(Auth, '/Auth/')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

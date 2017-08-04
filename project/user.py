@@ -1,7 +1,13 @@
 from project.database import db
 from sqlalchemy.sql import func
-from marshmallow import Schema, fields, post_load, ValidationError
+from flask import g
+from marshmallow import Schema, fields, post_load
+from itsdangerous import Serializer, SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer
+from flask_httpauth import HTTPBasicAuth
 
+import os
+
+auth = HTTPBasicAuth()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -20,6 +26,38 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password = password
+
+    def generate_auth_token(self, expiration=600):
+        s = TimedJSONWebSignatureSerializer(
+            os.environ.get("SECRET_KEY"),
+            expires_in=expiration
+        )
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(os.environ.get("SECRET_KEY"))
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None  # valid token, but expired
+        except BadSignature:
+            return None  # invalid token
+        user = User.get(User.id == data['id'])
+        return user
+
+    @auth.verify_password
+    def verify_password(username_or_token, password):
+        # first try to authenticate by token
+        user = User.verify_auth_token(username_or_token)
+        if not user:
+            user = User.get(
+                User.username == username_or_token
+            )  # based on credentials
+            if not user or not user.verify_password(password):
+                return False
+            g.user = user
+        return True
 
     def __repr__(self):
         return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
