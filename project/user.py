@@ -49,7 +49,7 @@ class User(db.Model):
         return s.dumps({'id': self.id})
 
     def verify_password(self, password):
-        return User.password == password
+        return self.password == password
 
     @staticmethod
     def verify_auth_token(token):
