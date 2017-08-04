@@ -33,7 +33,7 @@ class listUsers(Resource):
 
 api.add_resource(listUsers, '/Users')
 
-@auth.login_required
+
 class Users(Resource):
     method_decorators = [database_error_handler]
 
