@@ -57,8 +57,10 @@ class User(db.Model):
         try:
             data = s.loads(token)
         except SignatureExpired:
+            print("sign expired")
             return None  # valid token, but expired
         except BadSignature:
+            print("sign invalid")
             return None  # invalid token
         print(data['id'])
         user = User.get(id=data['id'])
