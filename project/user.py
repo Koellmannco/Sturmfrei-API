@@ -55,7 +55,6 @@ class User(db.Model):
     def verify_auth_token(token):
         s = TimedJSONWebSignatureSerializer(
             os.environ.get("SECRET_KEY"),
-            expires_in=600
         )
         try:
             data = s.loads(token)

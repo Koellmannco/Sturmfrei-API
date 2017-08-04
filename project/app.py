@@ -38,18 +38,14 @@ class Users(Resource):
     method_decorators = [database_error_handler]
 
     @auth.login_required
-    def get(self):
-        data = json.loads(request.data)
-        if 'id' in data or 'username' in data:
-            user = User.get(id=data['id'])
-            if user is not None:
-                schema = UserSchema()
-                userJSON = schema.dump(user)
-                return jsonify({'result': userJSON})
-            else:
-                abort(404, "user does not exist")
+    def get(self, user_id):
+        user = User.get(id=user_id)
+        if user is not None:
+            schema = UserSchema()
+            userJSON = schema.dump(user)
+            return jsonify({'result': userJSON})
         else:
-            abort(409, "missing user id")
+            abort(404, "user does not exist")
 
     def put(self):
         schema = UserSchema()
@@ -81,7 +77,7 @@ class Users(Resource):
             abort(409, "missing user id")
 
 
-api.add_resource(Users, '/Users/')
+api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
 
 
 
