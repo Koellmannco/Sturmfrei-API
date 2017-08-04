@@ -82,7 +82,7 @@ class Users(Resource):
 
 api.add_resource(Users, '/Users/')
 
-@app.route('/Auth/')
+
 @auth.login_required
 class Auth(Resource):
     def get(self):
@@ -95,7 +95,7 @@ class Auth(Resource):
         })
 
 
-#api.add_resource(Auth, '/Auth/')
+api.add_resource(Auth, '/Auth/')
 
 
 if __name__ == '__main__':
