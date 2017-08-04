@@ -27,6 +27,7 @@ class User(db.Model):
         self.email = email
         self.password = password
 
+    @staticmethod
     def get(self, id=None, username=None):
         if id:
             print("get user by id")
