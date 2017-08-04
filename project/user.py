@@ -63,11 +63,10 @@ class User(db.Model):
 @auth.verify_password
 def verify_password(username_or_token, password):
     # first try to authenticate by token
-    print(username_or_token)
-    print(password)
     user = User.verify_auth_token(username_or_token)
     if not user:
         user = User.get(username_or_token)  # based on credentials
+        print(user)
         if not user or not user.verify_password(password):
             return False
         g.user = user
