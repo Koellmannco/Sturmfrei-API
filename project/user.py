@@ -46,9 +46,12 @@ class User(db.Model):
         user = User.get(User.id == data['id'])
         return user
 
+    def get(self, username):
+        return User.query.filter_by(username=username)
 
     def __repr__(self):
         return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
+
 
 @auth.verify_password
 def verify_password(username_or_token, password):
