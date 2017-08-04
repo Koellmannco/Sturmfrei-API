@@ -43,11 +43,15 @@ class User(db.Model):
             return None  # valid token, but expired
         except BadSignature:
             return None  # invalid token
-        user = User.get(User.id == data['id'])
+        user = User.get(data['id'])
         return user
 
-    def get(self, username):
-        return User.query.filter_by(username=username)
+    def get(self, id=None, username=None):
+        if id:
+            return User.query.filter_by(id=id)
+        elif username:
+            return User.query.filter_by(username=username)
+        return None
 
     def __repr__(self):
         return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
@@ -58,9 +62,7 @@ def verify_password(username_or_token, password):
     # first try to authenticate by token
     user = User.verify_auth_token(username_or_token)
     if not user:
-        user = User.get(
-            User.username == username_or_token
-        )  # based on credentials
+        user = User.get(username_or_token)  # based on credentials
         if not user or not user.verify_password(password):
             return False
         g.user = user
