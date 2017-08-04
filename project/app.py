@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, json, abort, g
 from project.database import db
-from project.user import User, UserSchema
+from project.user import User, UserSchema, auth
 from flask_restful import Resource, Api
 from project.database_error_handler import database_error_handler
 from project.validation_errors import handle_validation_errors
@@ -82,7 +82,7 @@ class Users(Resource):
 
 api.add_resource(Users, '/Users/')
 
-
+@auth.login_required
 class Auth(Resource):
     def get(self):
         duration = 600
