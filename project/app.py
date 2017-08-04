@@ -83,8 +83,9 @@ class Users(Resource):
 api.add_resource(Users, '/Users/')
 
 
-@auth.login_required
+
 class Auth(Resource):
+    @auth.login_required
     def get(self):
         duration = 600
         token = g.user.generate_auth_token(duration)
