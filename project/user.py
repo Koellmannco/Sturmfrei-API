@@ -69,6 +69,7 @@ class User(db.Model):
 def verify_password(username_or_token, password):
     # first try to authenticate by token
     print("verify based on token")
+    print(username_or_token)
     user = User.verify_auth_token(username_or_token)
     if not user:
         print("verify based on credentials")
