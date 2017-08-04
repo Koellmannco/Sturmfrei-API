@@ -31,10 +31,10 @@ class User(db.Model):
     def get(id=None, username=None):
         if id:
             print("get user by id")
-            return User.query.filter_by(id=id)
+            return User.query.filter_by(id=id).first()
         elif username:
             print("get user by username")
-            return User.query.filter_by(username=username)
+            return User.query.filter_by(username=username).first()
         print("user not found")
         return None
 
