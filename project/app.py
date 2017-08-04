@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, json, abort, g
 from project.database import db
 from project.user import User, UserSchema, auth
 from flask_restful import Resource, Api
+from flask.views import MethodView
 from project.database_error_handler import database_error_handler
 from project.validation_errors import handle_validation_errors
 #from mixer.backend.flask import mixer
@@ -84,7 +85,7 @@ api.add_resource(Users, '/Users/')
 
 
 @auth.login_required
-class Auth(Resource):
+class Auth(MethodView):
     def get(self):
         duration = 600
         token = g.user.generate_auth_token(duration)
