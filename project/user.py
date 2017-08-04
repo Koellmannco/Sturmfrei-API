@@ -53,7 +53,9 @@ class User(db.Model):
 
     @staticmethod
     def verify_auth_token(token):
-        s = Serializer(os.environ.get("SECRET_KEY"))
+        s = TimedJSONWebSignatureSerializer(
+            os.environ.get("SECRET_KEY")
+        )
         try:
             data = s.loads(token)
         except SignatureExpired:
