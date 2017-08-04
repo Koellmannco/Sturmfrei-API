@@ -83,7 +83,7 @@ class Users(Resource):
 api.add_resource(Users, '/Users/')
 
 
-
+@auth.login_required
 class Auth(Resource):
     def get(self):
         duration = 600
@@ -95,7 +95,7 @@ class Auth(Resource):
         })
 
 
-api.add_resource(Auth, '/Auth/')
+api.add_resource(Auth, '/Auth/token')
 
 
 if __name__ == '__main__':

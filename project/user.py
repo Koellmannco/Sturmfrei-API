@@ -46,22 +46,22 @@ class User(db.Model):
         user = User.get(User.id == data['id'])
         return user
 
-    @auth.verify_password
-    def verify_password(username_or_token, password):
-        # first try to authenticate by token
-        user = User.verify_auth_token(username_or_token)
-        if not user:
-            user = User.get(
-                User.username == username_or_token
-            )  # based on credentials
-            if not user or not user.verify_password(password):
-                return False
-            g.user = user
-        return True
 
     def __repr__(self):
         return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
 
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        user = User.get(
+            User.username == username_or_token
+        )  # based on credentials
+        if not user or not user.verify_password(password):
+            return False
+        g.user = user
+    return True
 
 class UserSchema(Schema):
     id = fields.Int()
