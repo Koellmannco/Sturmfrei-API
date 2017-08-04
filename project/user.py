@@ -27,6 +27,19 @@ class User(db.Model):
         self.email = email
         self.password = password
 
+    def get(self, id=None, username=None):
+        if id:
+            print("get user by id")
+            return User.query.filter_by(id=id)
+        elif username:
+            print("get user by username")
+            return User.query.filter_by(username=username)
+        print("user not found")
+        return None
+
+    def __repr__(self):
+        return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
+
     def generate_auth_token(self, expiration=600):
         s = TimedJSONWebSignatureSerializer(
             os.environ.get("SECRET_KEY"),
@@ -46,21 +59,8 @@ class User(db.Model):
             return None  # valid token, but expired
         except BadSignature:
             return None  # invalid token
-        user = User.get(data['id'])
+        user = User.get(id=data['id'])
         return user
-
-    def get(self, id=None, username=None):
-        if id:
-            print("get user by id")
-            return User.query.filter_by(id=id)
-        elif username:
-            print("get user by username")
-            return User.query.filter_by(username=username)
-        print("user not found")
-        return None
-
-    def __repr__(self):
-        return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
 
 
 @auth.verify_password
@@ -68,7 +68,7 @@ def verify_password(username_or_token, password):
     # first try to authenticate by token
     user = User.verify_auth_token(username_or_token)
     if not user:
-        user = User.get(username_or_token)  # based on credentials
+        user = User.get(username=username_or_token)  # based on credentials
         if not user or not user.verify_password(password):
             return False
         g.user = user
