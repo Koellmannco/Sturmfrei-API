@@ -37,10 +37,11 @@ api.add_resource(listUsers, '/Users')
 class Users(Resource):
     method_decorators = [database_error_handler]
 
+    @auth.login_required
     def get(self):
         data = json.loads(request.data)
-        if 'id' in data:
-            user = User.query.filter_by(id=data['id']).first()
+        if 'id' in data or 'username' in data:
+            user = User.get(id=data['id'])
             if user is not None:
                 schema = UserSchema()
                 userJSON = schema.dump(user)
@@ -50,6 +51,7 @@ class Users(Resource):
         else:
             abort(409, "missing user id")
 
+    @auth.login_required
     def put(self):
         schema = UserSchema()
         user, error = schema.loads(request.data)
