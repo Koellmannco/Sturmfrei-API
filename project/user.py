@@ -65,7 +65,7 @@ class User(db.Model):
             print("sign invalid")
             return None  # invalid token
         print(data['id'])
-        user = User.get(id=data['id'])
+        user = User.get(user_id=data['id'])
         return user
 
 
