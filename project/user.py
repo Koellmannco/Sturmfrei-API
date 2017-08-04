@@ -60,6 +60,7 @@ class User(db.Model):
             return None  # valid token, but expired
         except BadSignature:
             return None  # invalid token
+        print(data['id'])
         user = User.get(id=data['id'])
         return user
 
