@@ -51,9 +51,12 @@ class User(db.Model):
 
     def get(self, id=None, username=None):
         if id:
+            print("get user by id")
             return User.query.filter_by(id=id)
         elif username:
+            print("get user by username")
             return User.query.filter_by(username=username)
+        print("user not found")
         return None
 
     def __repr__(self):
@@ -66,7 +69,6 @@ def verify_password(username_or_token, password):
     user = User.verify_auth_token(username_or_token)
     if not user:
         user = User.get(username_or_token)  # based on credentials
-        print(user)
         if not user or not user.verify_password(password):
             return False
         g.user = user
