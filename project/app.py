@@ -51,7 +51,6 @@ class Users(Resource):
         else:
             abort(409, "missing user id")
 
-    @auth.login_required
     def put(self):
         schema = UserSchema()
         user, error = schema.loads(request.data)
