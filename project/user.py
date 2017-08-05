@@ -30,12 +30,9 @@ class User(db.Model):
     @staticmethod
     def get(user_id=None, username=None):
         if user_id:
-            print("get user by id")
             return User.query.filter_by(id=user_id).first()
         elif username:
-            print("get user by username")
             return User.query.filter_by(username=username).first()
-        print("user not found")
         return None
 
     def __repr__(self):
@@ -59,10 +56,10 @@ class User(db.Model):
         try:
             data = s.loads(token)
         except SignatureExpired:
-            print("sign expired")
+            print("token expired")
             return None  # valid token, but expired
         except BadSignature:
-            print("sign invalid")
+            print("token invalid")
             return None  # invalid token
         print(data['id'])
         user = User.get(user_id=data['id'])
@@ -82,6 +79,7 @@ def verify_password(username_or_token, password):
             return False
         g.user = user
     return True
+
 
 class UserSchema(Schema):
     id = fields.Int()

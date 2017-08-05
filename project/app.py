@@ -38,7 +38,7 @@ class Users(Resource):
     method_decorators = [database_error_handler]
 
     @auth.login_required
-    def get(self, user_id):
+    def get(self, user_id=None):
         user = User.get(user_id=user_id)
         if user is not None:
             schema = UserSchema()
