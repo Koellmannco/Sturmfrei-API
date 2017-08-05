@@ -10,7 +10,7 @@ pwd_context = CryptContext(
     # Replace this list with the hash(es) you wish to support.
     # this example sets pbkdf2_sha256 as the default,
     # with additional support for reading legacy des_crypt hashes.
-    schemes=["bcrypt"],
+    schemes=["bcrypt_sha256","bcrypt"],
 
     # Automatically mark all but first hasher in list as deprecated.
     # (this will be the default in Passlib 2.0)
@@ -20,5 +20,6 @@ pwd_context = CryptContext(
     # Appropriate values may vary for different schemes,
     # and the amount of time you wish it to take.
     # Leaving this alone is usually safe, and will use passlib's defaults.
-    ## pbkdf2_sha256__rounds = 29000,
+    # can be btw 4 and 31, is logarithmic
+     bcrypt_sha256__rounds = 12,
     )

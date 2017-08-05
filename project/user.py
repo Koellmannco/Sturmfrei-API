@@ -2,8 +2,9 @@ from project.database import db
 from sqlalchemy.sql import func
 from flask import g
 from marshmallow import Schema, fields, post_load
-from itsdangerous import Serializer, SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer
+from itsdangerous import SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer
 from flask_httpauth import HTTPBasicAuth
+from project.security import pwd_context
 
 import os
 
@@ -46,6 +47,8 @@ class User(db.Model):
         return s.dumps({'id': self.id})
 
     def verify_password(self, password):
+        hash= User.query.filter_by(username=self.username).first()
+        login = pwd_context.verify(password, hash, salt = "1234567890123456789012")
         return self.password == password
 
     @staticmethod
@@ -56,24 +59,19 @@ class User(db.Model):
         try:
             data = s.loads(token)
         except SignatureExpired:
-            print("token expired")
             return None  # valid token, but expired
         except BadSignature:
-            print("token invalid")
             return None  # invalid token
-        print(data['id'])
         user = User.get(user_id=data['id'])
+        print(type(user))
         return user
 
 
 @auth.verify_password
 def verify_password(username_or_token, password):
     # first try to authenticate by token
-    print("verify based on token")
-    print(username_or_token)
     user = User.verify_auth_token(username_or_token)
     if not user:
-        print("verify based on credentials")
         user = User.get(username=username_or_token)  # based on credentials
         if not user or not user.verify_password(password):
             return False
