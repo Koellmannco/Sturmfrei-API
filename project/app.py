@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+
 @app.route('/')
 def index():
     return "Hello, World! This is the Sturmfrei API landing page"
