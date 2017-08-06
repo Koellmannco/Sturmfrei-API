@@ -4,7 +4,6 @@ from project.user import User, UserSchema, auth
 from flask_restful import Resource, Api
 from project.database_error_handler import database_error_handler
 from project.validation_errors import handle_validation_errors
-from flask_migrate import Migrate
 
 import os
 
