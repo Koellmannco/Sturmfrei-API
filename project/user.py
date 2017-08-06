@@ -39,7 +39,7 @@ class User(db.Model):
 
     def set_password(self, new_pass):
         salt = generate_salt()
-        new_hash = pwd_context.hash(new_pass, salt=str(salt))
+        new_hash = pwd_context.hash(new_pass, salt=salt)
         self.password = new_hash
         self.salt = salt
 
