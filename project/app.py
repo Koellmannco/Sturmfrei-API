@@ -46,14 +46,14 @@ class Users(Resource):
         else:
             abort(404, "user does not exist")
 
-    def put(self):
+    def post(self):
         schema = UserSchema()
         user, error = schema.loads(request.data)
         handle_validation_errors(error)
         db.session.add(user)
         db.session.commit()
 
-    def post(self):
+    def put(self):
         data = json.loads(request.data)
         errors = UserSchema().validate(data, partial=True )
         handle_validation_errors(errors)
@@ -79,6 +79,15 @@ class Users(Resource):
 api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
 
 
+class PasswordReset:
+    def put(self, user_id=None):
+        data = json.loads(request.data)
+        if user_id is not None and 'password' in data:
+            user=User.get(user_id=user_id)
+            user.set_password(data['password'])
+        abort(409, "missing user id")
+
+api.add_resource(PasswordReset, '/passwordReset/<int:user_id>')
 
 class Auth(Resource):
     @auth.login_required
