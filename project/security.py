@@ -2,6 +2,7 @@
 # import the CryptContext class, used to handle all hashing...
 #
 from passlib.context import CryptContext
+import os
 
 #
 # create a single global instance for your app...
@@ -23,3 +24,7 @@ pwd_context = CryptContext(
     # can be btw 4 and 31, is logarithmic
      bcrypt_sha256__rounds = 12,
     )
+
+
+def generate_salt():
+    return os.urandom(22)

@@ -4,7 +4,7 @@ from flask import g
 from marshmallow import Schema, fields, post_load
 from itsdangerous import SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer
 from flask_httpauth import HTTPBasicAuth
-from project.security import pwd_context
+from project.security import pwd_context, generate_salt
 
 import os
 
@@ -18,6 +18,7 @@ class User(db.Model):
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(40), nullable=False, unique=True)
     password = db.Column(db.String(32), nullable=False)
+    #salt = db.Column(db.String(22), nullable=False)
     time_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -36,8 +37,14 @@ class User(db.Model):
             return User.query.filter_by(username=username).first()
         return None
 
-    def __repr__(self):
-        return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
+    def set_password(self, new_pass):
+        salt = generate_salt()
+        new_hash = pwd_context.hash(new_pass, salt=salt)
+        self.password = new_hash
+        self.salt = salt
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password, salt=self.salt)
 
     def generate_auth_token(self, expiration=600):
         s = TimedJSONWebSignatureSerializer(
@@ -45,11 +52,6 @@ class User(db.Model):
             expires_in=expiration
         )
         return s.dumps({'id': self.id})
-
-    def verify_password(self, password):
-        hash= User.query.filter_by(username=self.username).first()
-        login = pwd_context.verify(password, hash, salt = "1234567890123456789012")
-        return self.password == password
 
     @staticmethod
     def verify_auth_token(token):
@@ -63,8 +65,10 @@ class User(db.Model):
         except BadSignature:
             return None  # invalid token
         user = User.get(user_id=data['id'])
-        print(type(user))
         return user
+
+    def __repr__(self):
+        return '{0} {1}: {2}'.format(self.firstname, self.lastname, self.email)
 
 
 @auth.verify_password
@@ -97,6 +101,10 @@ class UserSchema(Schema):
         load_only=True,
         required=True
     )
+    # salt = fields.Str(
+    #     load_only=True,
+    #     required=True
+    # )
     time_created = fields.DateTime(dump_only=True)
     time_updated = fields.DateTime(dump_only=True)
 

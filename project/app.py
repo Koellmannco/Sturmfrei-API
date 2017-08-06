@@ -4,7 +4,7 @@ from project.user import User, UserSchema, auth
 from flask_restful import Resource, Api
 from project.database_error_handler import database_error_handler
 from project.validation_errors import handle_validation_errors
-#from mixer.backend.flask import mixer
+from flask_migrate import Migrate
 
 import os
 
@@ -14,7 +14,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-
+migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
