@@ -55,7 +55,7 @@ class Users(Resource):
 
     def put(self):
         data = json.loads(request.data)
-        errors = UserSchema().validate(data, partial=True )
+        errors = UserSchema().validate(data, partial=True)
         handle_validation_errors(errors)
         if 'id' in data:
             user = User.query.filter_by(id=data['id']).first()
@@ -79,15 +79,18 @@ class Users(Resource):
 api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
 
 
-class PasswordReset:
+# todo make salt required on DB end
+class PasswordReset(Resource):
     def put(self, user_id=None):
         data = json.loads(request.data)
         if user_id is not None and 'password' in data:
-            user=User.get(user_id=user_id)
+            user = User.get(user_id=user_id)
             user.set_password(data['password'])
         abort(409, "missing user id")
 
+
 api.add_resource(PasswordReset, '/passwordReset/<int:user_id>')
+
 
 class Auth(Resource):
     @auth.login_required
@@ -102,7 +105,6 @@ class Auth(Resource):
 
 
 api.add_resource(Auth, '/Auth/token')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
