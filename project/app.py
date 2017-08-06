@@ -88,6 +88,7 @@ class PasswordReset(Resource):
             #if 'password' in data:
             user = User.get(user_id=user_id)
             user.set_password(data['password'])
+            db.session.commit()
             #abort(409, "missing password")
         abort(409, "user doesn't exist")
 
