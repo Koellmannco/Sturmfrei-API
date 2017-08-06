@@ -86,7 +86,7 @@ class PasswordReset(Resource):
         if user_id is not None and 'password' in data:
             user = User.get(user_id=user_id)
             user.set_password(data['password'])
-        abort(409, "missing user id")
+        abort(409, "missing user id or password")
 
 
 api.add_resource(PasswordReset, '/PasswordReset/<int:user_id>')

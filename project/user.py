@@ -38,13 +38,13 @@ class User(db.Model):
         return None
 
     def set_password(self, new_pass):
-        salt = generate_salt()
-        new_hash = pwd_context.hash(new_pass, salt=salt)
+        #salt = generate_salt()
+        new_hash = pwd_context.hash(new_pass)
         self.password = new_hash
-        self.salt = salt
+        #self.salt = salt
 
     def verify_password(self, password):
-        return pwd_context.verify(password, self.password, salt=self.salt)
+        return pwd_context.verify(password, self.password)
 
     def generate_auth_token(self, expiration=600):
         s = TimedJSONWebSignatureSerializer(
@@ -103,7 +103,7 @@ class UserSchema(Schema):
     )
     salt = fields.Str(
         load_only=True,
-        required=True
+        required=False
     )
     time_created = fields.DateTime(dump_only=True)
     time_updated = fields.DateTime(dump_only=True)
