@@ -21,4 +21,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_colunm('users', 'salt')
+    op.drop_column('users', 'salt')
