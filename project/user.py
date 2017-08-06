@@ -18,7 +18,6 @@ class User(db.Model):
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(40), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-    salt = db.Column(db.String(22), nullable=False)
     time_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -100,10 +99,6 @@ class UserSchema(Schema):
     password = fields.Str(
         load_only=True,
         required=True
-    )
-    salt = fields.Str(
-        load_only=True,
-        required=False
     )
     time_created = fields.DateTime(dump_only=True)
     time_updated = fields.DateTime(dump_only=True)
