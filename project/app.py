@@ -89,7 +89,7 @@ class PasswordReset(Resource):
         abort(409, "missing user id")
 
 
-api.add_resource(PasswordReset, '/passwordReset/<int:user_id>')
+api.add_resource(PasswordReset, '/PasswordReset/<int:user_id>')
 
 
 class Auth(Resource):
