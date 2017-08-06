@@ -4,7 +4,7 @@ from flask import g
 from marshmallow import Schema, fields, post_load
 from itsdangerous import SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer
 from flask_httpauth import HTTPBasicAuth
-from project.security import pwd_context, generate_salt
+from project.security import pwd_context
 
 import os
 
@@ -37,10 +37,8 @@ class User(db.Model):
         return None
 
     def set_password(self, new_pass):
-        #salt = generate_salt()
         new_hash = pwd_context.hash(new_pass)
         self.password = new_hash
-        #self.salt = salt
 
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)

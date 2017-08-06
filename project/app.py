@@ -79,12 +79,12 @@ class Users(Resource):
 api.add_resource(Users, '/Users/', '/Users/<int:user_id>')
 
 
-# todo make salt required on DB end
 class PasswordReset(Resource):
     def put(self, user_id=None):
         data = json.loads(request.data)
         print(data)
         if user_id is not None:
+            # todo: fix
             #if 'password' in data:
             user = User.get(user_id=user_id)
             user.set_password(data['password'])
