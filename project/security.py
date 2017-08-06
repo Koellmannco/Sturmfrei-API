@@ -2,7 +2,7 @@
 # import the CryptContext class, used to handle all hashing...
 #
 from passlib.context import CryptContext
-from base64 import b64encode
+import binascii
 import os
 
 #
@@ -28,4 +28,4 @@ pwd_context = CryptContext(
 
 
 def generate_salt():
-    return b64encode(os.urandom(22)).decode('utf-8')
+    return binascii.hexlify(os.urandom(11)).decode()
