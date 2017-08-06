@@ -85,10 +85,12 @@ class PasswordReset(Resource):
         print(user_id)
         data = json.loads(request.data)
         print(data['password'])
-        if user_id is not None and 'password' in data:
-            user = User.get(user_id=user_id)
-            user.set_password(data['password'])
-        abort(409, "missing user id or password")
+        if user_id is not None:
+            if 'password' in data:
+                user = User.get(user_id=user_id)
+                user.set_password(data['password'])
+            abort(409, "missing password")
+        abort(409, "user doesn't exist")
 
 
 api.add_resource(PasswordReset, '/PasswordReset/<int:user_id>')
